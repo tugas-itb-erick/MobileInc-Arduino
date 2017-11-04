@@ -1,6 +1,6 @@
 # Mobile, Inc. - Arduino
 
-Project by:
+Project by Chlordane:
 - Reinhard B. Linardi
 - Erick Wijaya
 - Roland Hartanto
