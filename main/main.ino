@@ -1,20 +1,25 @@
+#include <LED.h>
 //Mobile, Inc
 //Group: Chlordane
 
+/*********** WARNING *************/
+//do not use pin 13 !!!
 /*********** GLOBAL VARIABLES ***********/
 //Pin number constant
-const int ledPin = 13; //LED indicator
 const int switchPin = 12; //Tactile switch
 
 //Indicator LED on/off status
-int indicatorLEDState = LOW;
+int indicatorLEDState = 0;
 
 //tactile switch previous status
 int prevStatus = LOW;
 
 //time
 long prevMilis = 0;
-long debounce = 200;
+long debounce = 50;
+
+/*********** INSTANCES ***********/
+LED greenLED(9);
 
 /*********** CONTROLLER ***********/
 //LED Status Controller
@@ -22,7 +27,6 @@ void indicatorLEDSwitch();
 
 /*********** PIN DECLARATION ***********/
 void setup() {
-  pinMode(ledPin, OUTPUT); 
   pinMode(switchPin, INPUT_PULLUP); 
 }
 
@@ -38,13 +42,19 @@ void indicatorLEDSwitch(){
   
   switchStatus = digitalRead(switchPin);
   if(switchStatus == HIGH && prevStatus == LOW && millis() - prevMilis > debounce) {
-    if(indicatorLEDState == LOW){
-      indicatorLEDState = HIGH;
+    if(greenLED.isOn()){
+      greenLED.turnOff();
     }else{
-      indicatorLEDState = LOW;
+      greenLED.breathFade();
     }  
     prevMilis = millis();
   }
-  digitalWrite(ledPin,indicatorLEDState); 
+
+  if(greenLED.isOn()){
+    greenLED.breathFade();
+  }else{
+    greenLED.turnOff();
+  }
+  //digitalWrite(ledPin,indicatorLEDState); 
   prevStatus = switchStatus;
 }
