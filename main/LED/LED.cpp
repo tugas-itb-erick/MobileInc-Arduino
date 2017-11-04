@@ -25,12 +25,12 @@ void LED::breathFade(){
 }
 
 void LED::turnOn(){
-	digitalWrite(pin,HIGH);
+	analogWrite(pin,255);
 	state = 1;
 }
 
 void LED::turnOff(){
-	digitalWrite(pin,LOW);
+	analogWrite(pin,0);
 	state = 0;
 }
 

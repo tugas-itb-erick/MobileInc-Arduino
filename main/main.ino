@@ -19,10 +19,10 @@ long prevMilis = 0;
 long debounce = 50;
 
 //weather status
-int weatherStatus = 0;
+int weatherStatus = 1;
 
 /*********** INSTANCES ***********/
-LED greenLED(11);
+LED greenLED(13);
 LED redLED(10);
 
 /*********** CONTROLLER ***********/
@@ -32,12 +32,17 @@ void controlWeatherLEDStatus();
 
 /*********** PIN DECLARATION ***********/
 void setup() {
-  pinMode(switchPin, INPUT_PULLUP); 
+  pinMode(switchPin, INPUT_PULLUP);
+  Serial.begin(9600);
 }
 
 /*********** MAIN PROGRAM ***********/
 void loop() {
-  // put your main code here, to run repeatedly:
+  // STUB, nanti diganti jadi dapet data dari hasil bacaan suhu + kelembapan
+  if(Serial.available()>0){
+    weatherStatus = Serial.read()-'0';
+  }
+  Serial.print(weatherStatus); 
   indicatorLEDSwitch();
 }
 
@@ -64,12 +69,13 @@ void indicatorLEDSwitch(){
     greenLED.turnOff();
     redLED.turnOff();
   }
-  //digitalWrite(ledPin,indicatorLEDState); 
+   
   prevStatus = switchStatus;
 }
 
 void controlWeatherLEDStatus(){
   if(weatherStatus == 0){
+    greenLED.turnOff();
     redLED.breathFade();
   }else{
     greenLED.turnOn();
