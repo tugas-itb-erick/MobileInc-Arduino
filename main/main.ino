@@ -18,12 +18,17 @@ int prevStatus = LOW;
 long prevMilis = 0;
 long debounce = 50;
 
+//weather status
+int weatherStatus = 0;
+
 /*********** INSTANCES ***********/
-LED greenLED(9);
+LED greenLED(11);
+LED redLED(10);
 
 /*********** CONTROLLER ***********/
 //LED Status Controller
 void indicatorLEDSwitch();
+void controlWeatherLEDStatus();
 
 /*********** PIN DECLARATION ***********/
 void setup() {
@@ -36,25 +41,37 @@ void loop() {
   indicatorLEDSwitch();
 }
 
-//
+//Procedure Implementation
 void indicatorLEDSwitch(){
   int switchStatus;
   
   switchStatus = digitalRead(switchPin);
   if(switchStatus == HIGH && prevStatus == LOW && millis() - prevMilis > debounce) {
-    if(greenLED.isOn()){
+    if(indicatorLEDState == 1){
       greenLED.turnOff();
+      redLED.turnOff();
+      indicatorLEDState = 0;
     }else{
-      greenLED.breathFade();
+      indicatorLEDState = 1;
+      controlWeatherLEDStatus();
     }  
     prevMilis = millis();
   }
 
-  if(greenLED.isOn()){
-    greenLED.breathFade();
+  if(indicatorLEDState == 1){
+    controlWeatherLEDStatus();
   }else{
     greenLED.turnOff();
+    redLED.turnOff();
   }
   //digitalWrite(ledPin,indicatorLEDState); 
   prevStatus = switchStatus;
+}
+
+void controlWeatherLEDStatus(){
+  if(weatherStatus == 0){
+    redLED.breathFade();
+  }else{
+    greenLED.turnOn();
+  }
 }
