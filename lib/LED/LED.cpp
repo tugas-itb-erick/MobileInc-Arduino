@@ -12,13 +12,13 @@ void LED::breathFade(){
 	while(brightness <255){
 		brightness += fadeConstant;
 		analogWrite(pin,brightness);
-		delay(10);
+		delay(5);
 	}
 	
 	while(brightness >0){
 		brightness -= fadeConstant;
 		analogWrite(pin,brightness);
-		delay(10);
+		delay(5);
 	}
 	
 	state = 1;
