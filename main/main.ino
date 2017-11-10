@@ -1,3 +1,4 @@
+#include <SevenSegment.h>
 #include <Wire.h>
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
@@ -7,6 +8,8 @@
 //Mobile, Inc
 //Group: Chlordane
 
+/*********** PIN DEFINITION ***********/
+//LCD PIN
 #define I2C_ADDR 0x3F
 #define En_pin 2
 #define Rw_pin 1
@@ -17,12 +20,18 @@
 #define D7_pin 7
 #define BACKLIGHT 3
 
-/*********** WARNING *************/
-//do not use pin 13 !!!
-/*********** GLOBAL VARIABLES ***********/
-//Pin number constant
-const int switchPin = 12; //Tactile switch
+//seven segment PIN
+#define dataPin 5
+#define latchPin 6
+#define clockPin 7
 
+//others
+#define switchPin 12
+#define greenPin 13
+#define redPin 10
+#define sensorPin 8
+
+/*********** GLOBAL VARIABLES ***********/
 //Indicator LED on/off status
 int indicatorLEDState = 0;
 
@@ -37,9 +46,9 @@ long debounce = 40;
 int weatherStatus = 1;
 
 /*********** INSTANCES ***********/
-LED greenLED(13);
-LED redLED(10);
-DHT11 sensor(8);
+LED greenLED(greenPin);
+LED redLED(redPin);
+DHT11 sensor(sensorPin);
 LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
 /*********** CONTROLLER ***********/
@@ -47,7 +56,7 @@ LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin)
 void indicatorLEDSwitch();
 void controlWeatherLEDStatus();
 void initLCD();
-void displayLCD(char* message);
+void displayLCD(String message, int row, int col);
 
 /*********** PIN DECLARATION ***********/
 void setup() {
@@ -58,29 +67,23 @@ void setup() {
 
 /*********** MAIN PROGRAM ***********/
 void loop() {
+  
   int check = sensor.read();
-
-//  Serial.print("Humidity (%): ");
-//  Serial.println((float)sensor.getHumidity(), 2);
-//
-//  Serial.print("Temperature (°C): ");
-//  Serial.println((float)sensor.getTemperature(), 2);
-//
-//  delay(1000);
-  
-  
   
   float temperature = (float)sensor.getTemperature();
   float humidity = (float)sensor.getHumidity();
+  displayLCD("Temp=" + String(temperature) + String((char)223) + "C", 0, 0);
+  displayLCD("RH=" + String(humidity) + "%", 1, 0);
+  
   if(humidity >= 85 || temperature < 25){
     weatherStatus = 0;
-    displayLCD("weather : rainy");  
+    displayLCD("rainy", 1, 11);
   }else{
     weatherStatus = 1;
-    displayLCD("weather : good");  
+    displayLCD(" good", 1, 11);
   }
     
-  Serial.print(weatherStatus); 
+  //Serial.print(weatherStatus); 
   indicatorLEDSwitch();
 }
 
@@ -128,10 +131,9 @@ void initLCD(){
   lcd.setBacklight(HIGH);  
 }
 
-void displayLCD(char* message){
-  lcd.clear();
+void displayLCD(String message, int row, int col){
   lcd.backlight();
-  lcd.setCursor(0,0);
+  lcd.setCursor(col,row);
   lcd.print(message);
   delay(100);
 }
