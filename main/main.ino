@@ -79,13 +79,16 @@ void loop() {
   if(humidity >= 85 || temperature < 25){
     weatherStatus = 0;
     displayLCD("rainy", 1, 11);
+    Serial.write(0);
     sevenSegment.setNumberOn(0,0);  
   }else{
     weatherStatus = 1;
     displayLCD(" good", 1, 11);
+    Serial.write(1);
     sevenSegment.setNumberOn(1,0);  
   }
-  
+    
+  //Serial.print(weatherStatus); 
   indicatorLEDSwitch();
 }
 
