@@ -26,7 +26,7 @@
 #define clockPin 7
 
 //others
-#define switchPin 12
+#define switchPin 12 //Tactile switch pin
 #define greenPin 13
 #define redPin 10
 #define sensorPin 8
@@ -50,6 +50,7 @@ LED greenLED(greenPin);
 LED redLED(redPin);
 DHT11 sensor(sensorPin);
 LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
+SevenSegment sevenSegment(dataPin,latchPin,clockPin);
 
 /*********** CONTROLLER ***********/
 //LED Status Controller
@@ -78,12 +79,13 @@ void loop() {
   if(humidity >= 85 || temperature < 25){
     weatherStatus = 0;
     displayLCD("rainy", 1, 11);
+    sevenSegment.setNumberOn(0,0);  
   }else{
     weatherStatus = 1;
     displayLCD(" good", 1, 11);
+    sevenSegment.setNumberOn(1,0);  
   }
-    
-  //Serial.print(weatherStatus); 
+  
   indicatorLEDSwitch();
 }
 
