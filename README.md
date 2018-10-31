@@ -19,15 +19,12 @@ Subsistem Arduino merupakan subsistem yang berperan sebagai sensor suhu dan kele
 - Subsistem mampu mengirimkan data ke permainan utama pada subsistem Unity. 
 
 ## Cara instalasi aplikasi
-1. Buka link berikut :
-https://drive.google.com/open?id=1R2LVf0eJqQqwxEMbJ_Q9IvqCWonDNfAY
-2. Download ZIP pada link tersebut
-3. Extract ZIP
-4. Buka IDE Arduino, buka file *main.ino*
-5. Pilih Sketch > Include Library > Add ZIP Library. Masukkan semua library yang ada.
-6. Pilih semua library dari list.
-7. Sambungkan Arduino ke komputer.
-8. Tekan tombol Upload. Program akan otomatis dikompilasi dan dijalankan oleh Arduino.
+1. Download dan extract ZIP dari [MobileInc-Arduino](https://github.com/tugas-itb-erick/MobileInc-Arduino/releases). 
+2. Buka IDE Arduino, buka file *main.ino*. 
+3. Pilih Sketch > Include Library > Add ZIP Library. Masukkan semua library yang ada.
+4. Pilih semua library dari list.
+5. Sambungkan Arduino ke komputer.
+6. Tekan tombol Upload. Program akan otomatis dikompilasi dan dijalankan oleh Arduino.
 
 ## Panduan pemakaian
 Pada subsistem Arduino, program langsung berjalan ketika user menghubungkan Arduino dengan komputer. User dapat melihat hasil pembacaan sensor suhu dan kelembapan pada LCD. Selain itu, user juga dapat melihat kategori cuaca pada 7 segment. Kategori cuaca juga dapat dilihat melalui LED. Untuk menyalakan/mematikan fitur LED, user dapat menekan *push button*.
